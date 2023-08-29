@@ -4,14 +4,13 @@ import express from 'express';
 import logging from './config/logging';
 import config from './config/config';
 import bookRoutes from './routes/book';
-import mongoose, { ConnectOptions } from 'mongoose';
+import mongoose from 'mongoose';
 
 const NAMESPACE = 'Server';
 const router = express();
-//https://youtu.be/lNqaQ0wEeAo?t=357
-//www.youtube.com/watch?v=lNqaQ0wEeAo
+
 https: mongoose
-    .connect(config.mongo.url, config.mongo.options as ConnectOptions)
+    .connect(config.mongo.url, config.mongo.options)
     .then((result) => {
         logging.info(NAMESPACE, 'connected to mongoDB!');
     })
@@ -28,7 +27,7 @@ router.use((req, res, next) => {
     next();
 });
 
-router.use(bodyParser.urlencoded({extended:false}));
+router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
  
 router.use((req, res, next)=>{

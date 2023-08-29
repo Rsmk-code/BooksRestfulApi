@@ -9,5 +9,5 @@ certs/**/*
 *.key
 *.mobileprovision
 *.orig.*
-
+.env
 package-lock.json
