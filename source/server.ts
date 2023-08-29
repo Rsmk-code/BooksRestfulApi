@@ -3,10 +3,21 @@ import bodyParser from 'body-parser';
 import express from 'express';
 import logging from './config/logging';
 import config from './config/config';
-import sampleRoutes from './routes/sample';
+import bookRoutes from './routes/book';
+import mongoose, { ConnectOptions } from 'mongoose';
 
 const NAMESPACE = 'Server';
 const router = express();
+//https://youtu.be/lNqaQ0wEeAo?t=357
+//www.youtube.com/watch?v=lNqaQ0wEeAo
+https: mongoose
+    .connect(config.mongo.url, config.mongo.options as ConnectOptions)
+    .then((result) => {
+        logging.info(NAMESPACE, 'connected to mongoDB!');
+    })
+    .catch((error) => {
+        logging.error(NAMESPACE, error.message, error);
+    });
 
 /** Logging the request */
 router.use((req, res, next) => {
@@ -33,7 +44,7 @@ router.use((req, res, next)=>{
 });
 
 /** Routes */
-router.use('/sample', sampleRoutes);
+router.use('/api/books', bookRoutes);
 
 /** Error handling */
 router.use((req, res, next)=>{
