@@ -1,4 +1,4 @@
-import e, {Request, Response, NextFunction} from 'express';
+import  {Request, Response, NextFunction} from 'express';
 import mongoose from 'mongoose';
 import Book from '../models/book';
 
@@ -28,6 +28,8 @@ const createBook = (req: Request, res: Response, next: NextFunction) => {
 
 const getAllBooks = (req: Request, res: Response, next: NextFunction) => {
     Book.find()
+        .populate('author')
+        .select('-__v')
         .exec()
         .then((books) => {
             return res.status(200).json({
@@ -48,15 +50,21 @@ const getBookById = (req: Request, res: Response, next: NextFunction)=>{
     const bookId = req.params.bookId;
 
     return Book.findById(bookId)
-        .then((book)=> (book ? res.status(200).json({ book }) : res.status(404).json({
-            message: 'Not found'
-        })))
+        .populate('author')
+        .select('-__v')
+        .then((book) =>
+            book
+                ? res.status(200).json({ book })
+                : res.status(404).json({
+                      message: 'Not found'
+                  })
+        )
         .catch((error) => {
             res.status(500).json({
                 message: error.message,
                 error
-            })
-        })
+            });
+        });
 }
 
 const updateBook = (req: Request, res: Response, next: NextFunction)=>{

@@ -1,14 +1,15 @@
 import mongoose, { Schema, model, Document, Types } from 'mongoose';
 import logging from '../config/logging';
 
-export interface IBook extends Document {
+export interface IBook {
     title: string;
     author: string;
 }
-const BookSchema = new Schema<IBook>(
+export interface IBookModel extends IBook, Document{}
+const BookSchema: Schema = new Schema(
     {
         title: { type: String, required: true },
-        author: { type: String, required: true }
+        author: { type: Schema.Types.ObjectId, required: true, ref:'Author' }
     },
     {
         timestamps: true

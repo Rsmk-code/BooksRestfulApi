@@ -4,6 +4,7 @@ import express from 'express';
 import logging from './config/logging';
 import config from './config/config';
 import bookRoutes from './routes/book';
+import authorRoutes from './routes/author'
 import mongoose from 'mongoose';
 
 const NAMESPACE = 'Server';
@@ -44,6 +45,7 @@ router.use((req, res, next)=>{
 
 /** Routes */
 router.use('/api/books', bookRoutes);
+router.use('/api/authors', authorRoutes)
 
 /** Error handling */
 router.use((req, res, next)=>{
