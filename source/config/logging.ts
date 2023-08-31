@@ -1,4 +1,3 @@
-import e from "express";
 
 const getTimeStamp = (): string =>{
     return new Date().toISOString();
